@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Table from './Table';
 import Form from './Form';
+import axios from 'axios';
 
-/* testing */
 
 /*
 const characters = [
@@ -36,9 +36,29 @@ function MyApp() {
       });
       setCharacters(updated);
     }
-    function updateList(person) {
+    
+  function updateList(person) {
       setCharacters([...characters, person]);
     }
+
+  async function fetchAll(){
+    try{
+      const response = await axios.get('http://localhost:5000/users');
+      return response.data.users_list;
+    }
+    catch(error){
+      //not handling errors rn, just logging them into the console
+      console.log(error);
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    fetchAll().then( result => {
+      if(result)
+        setCharacters(result);
+    });
+  }, []);
 
     return (
       <div className="container">
