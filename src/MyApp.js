@@ -25,7 +25,6 @@ const characters = [
 ];
 */
 
-
 function MyApp() {
 
   const [characters, setCharacters] = useState([]);;
@@ -36,11 +35,13 @@ function MyApp() {
       });
       setCharacters(updated);
     }
-    
+
   function updateList(person) {
       setCharacters([...characters, person]);
     }
 
+    // an ansync function: makes an await call to our backend, it's non-blocking, allowing our frontend to run other threads
+    // as needed until we receive access to the data from the response object and return it to the caller (in this case the frontend)
   async function fetchAll(){
     try{
       const response = await axios.get('http://localhost:5000/users');
@@ -53,11 +54,16 @@ function MyApp() {
     }
   }
 
+  // myApp component call to the fetchAll to set the component state and ultimately render the table with the fetched data
+  // ** we only want the fetch all function to be called once to build the data for the first time, after called once, 
+  // changes on the table should be handled by adding or removing characters from the state and not fetching all the data again.
+
   useEffect(() => {
     fetchAll().then( result => {
       if(result)
         setCharacters(result);
     });
+
   }, []);
 
     return (
