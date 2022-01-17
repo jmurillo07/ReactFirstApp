@@ -38,8 +38,11 @@ function MyApp() {
 
     function updateList(person) { 
       makePostCall(person).then( result => {
-      if (result && result.status === 200)
-         setCharacters([...characters, person] );
+      if (result && result.status === 201){
+        const person = result.data;
+        setCharacters([...characters, person] );
+      }
+         
       });
    }
 
@@ -60,6 +63,7 @@ function MyApp() {
     async function makePostCall(person){
       try{
         const response = await axios.post('http://localhost:5000/users', person);
+        console.log(response);
         return response;
       }
       catch(error){
@@ -67,8 +71,6 @@ function MyApp() {
         return false;
       }
     }
-
-  
 
   // myApp component call to the fetchAll to set the component state and ultimately render the table with the fetched data
   // ** we only want the fetch all function to be called once to build the data for the first time, after called once, 
