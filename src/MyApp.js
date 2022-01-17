@@ -36,9 +36,12 @@ function MyApp() {
       setCharacters(updated);
     }
 
-  function updateList(person) {
-      setCharacters([...characters, person]);
-    }
+    function updateList(person) { 
+      makePostCall(person).then( result => {
+      if (result && result.status === 200)
+         setCharacters([...characters, person] );
+      });
+   }
 
     // an ansync function: makes an await call to our backend, it's non-blocking, allowing our frontend to run other threads
     // as needed until we receive access to the data from the response object and return it to the caller (in this case the frontend)
@@ -51,8 +54,21 @@ function MyApp() {
       //not handling errors rn, just logging them into the console
       console.log(error);
       return false;
+  }}
+
+    //similar to fetchAll function, makes a POST request and returns the respon
+    async function makePostCall(person){
+      try{
+        const response = await axios.post('http://localhost:5000/users', person);
+        return response;
+      }
+      catch(error){
+        console.log(error);
+        return false;
+      }
     }
-  }
+
+  
 
   // myApp component call to the fetchAll to set the component state and ultimately render the table with the fetched data
   // ** we only want the fetch all function to be called once to build the data for the first time, after called once, 
