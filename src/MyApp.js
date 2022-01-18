@@ -29,21 +29,33 @@ function MyApp() {
 
   const [characters, setCharacters] = useState([]);;
 
-  function removeOneCharacter (index) {
+  function removeOneCharacter (id) {
+
+    makeDeleteCall(id).then( result => {
+      if (result && result.status === 204){
+        const newList = characters.filter((character) => {
+          return id !== character.id;
+        });
+        setCharacters(newList);
+      }
+      });
+
+    /*
     const updated = characters.filter((character, i) => {
         return i !== index
       });
-      //makeDeleteCall(character);
+      //makeDeleteCall(updated);
       setCharacters(updated);
+    */
     }
 
     function updateList(person) { 
+
       makePostCall(person).then( result => {
       if (result && result.status === 201){
         const person = result.data;
         setCharacters([...characters, person] );
       }
-         
       });
    }
 
@@ -73,10 +85,10 @@ function MyApp() {
       }
     }
 
-    /*
-    async function makeDeleteCall(person){
+    
+    async function makeDeleteCall(id){
       try{
-        const response = await axios.delete('http://localhost:5000/users' + person.id);
+        const response = await axios.delete('http://localhost:5000/users/' + id);
         console.log(response);
         return response;
       }
@@ -86,7 +98,6 @@ function MyApp() {
         return false;
       }
     }
-    */
 
   // myApp component call to the fetchAll to set the component state and ultimately render the table with the fetched data
   // ** we only want the fetch all function to be called once to build the data for the first time, after called once, 
