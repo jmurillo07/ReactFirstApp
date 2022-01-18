@@ -33,6 +33,7 @@ function MyApp() {
     const updated = characters.filter((character, i) => {
         return i !== index
       });
+      //makeDeleteCall(character);
       setCharacters(updated);
     }
 
@@ -71,6 +72,21 @@ function MyApp() {
         return false;
       }
     }
+
+    /*
+    async function makeDeleteCall(person){
+      try{
+        const response = await axios.delete('http://localhost:5000/users' + person.id);
+        console.log(response);
+        return response;
+      }
+      catch (error){
+        // 404 error: resource not found
+        console.log(error);
+        return false;
+      }
+    }
+    */
 
   // myApp component call to the fetchAll to set the component state and ultimately render the table with the fetched data
   // ** we only want the fetch all function to be called once to build the data for the first time, after called once, 
